@@ -20,10 +20,12 @@ io.on('connection', (socket) => {
 
     socket.broadcast.emit('newMessage', message('Dev', 'New user has jointed the chatroom!'));
 
-    socket.on('createMessage', (msg) => {
+    socket.on('createMessage', (msg, callback) => {
         console.log(msg);
 
         io.emit('newMessage', message(msg.from, msg.text));
+
+        callback('Ok');
     })
 
     socket.on('disconnect', () => {
