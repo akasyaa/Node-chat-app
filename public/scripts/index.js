@@ -24,3 +24,20 @@ $('#message-form').on('submit', function(e) {
         console.log(ack);
     });
 });
+
+var locationButton = $('#send-location');
+
+locationButton.on('click', function(e) {
+    if (!navigator.geolocation) {
+        return alert('Geolocation not supported by your browser.');
+    }
+
+    navigator.geolocation.getCurrentPosition(function(position) {
+        socket.emit('createLocationMessage', {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude
+        });
+    }, function() {
+        alert('Unable to fetch location.');
+    });
+});
