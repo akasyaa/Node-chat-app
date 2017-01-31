@@ -35,6 +35,16 @@ socket.on('disconnect', function() {
     console.log('Server disconnected');
 });
 
+socket.on('updateUserList', function(users) {
+    var ol = $('<ol></ol>');
+
+    users.forEach(function(user) {
+        ol.append($('<li></li>').text(user));
+    });
+
+    $('#users').html(ol);
+});
+
 socket.on('newMessage', function(msg) {
     var message = $('#message-template').html();
     var html = Mustache.render(message, {
