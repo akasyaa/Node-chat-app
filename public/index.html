@@ -8,51 +8,24 @@
 
     <link rel="stylesheet" href="styles/styles.css">
 </head>
-<body class="chat">
-    <div class="chat__sidebar">
-        <h3>Users</h3>
-        <div id="users"></div>
+<body class="centered-form">
+    <div class="centered-form__form">
+        <form action="chat.html">
+            <div class="form-field">
+                <h3>Join a Chat</h3>
+            </div>
+            <div class="form-field">
+                <label>Display name</label>
+                <input type="text" name="name" autofocus/>
+            </div>
+            <div class="form-field">
+                <label>Room name</label>
+                <input type="text" name="room">
+            </div>
+            <div class="form-field">
+                <button>Join</button>
+            </div>
+        </form>
     </div>
-    <div class="chat__main">
-        <ul id="message-list" class="chat__messages"></ul>
-        <div class="chat__footer">
-            <form id="message-form">
-                <input name="message" type="text" placeholder="Enter message" autofocus autocomplete="off">
-                <button>Send</button>
-            </form>
-            <button id="send-location">Send location</button>
-        </div>
-    </div>
-
-    <script id="message-template" type="text/template">
-        <li class="message">
-            <div class="message__title">
-                <h4>{{from}}</h4>
-                <span>{{time}}</span>
-            </div>
-            <div class="message__body">
-                <p>{{text}}</p>
-            </div>
-        </li>
-    </script>
-
-    <script id="location-message-template" type="text/template">
-        <li class="message">
-            <div class="message__title">
-                <h4>{{from}}</h4>
-                <span>{{time}}</span>
-            </div>
-            <div class="message__body">
-                <a href="{{url}}" target="_blank">My current location</a>
-            </div>
-        </li>
-    </script>
-
-    <script src="/socket.io/socket.io.js"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.6/js/bootstrap.min.js" integrity="sha384-vBWWzlZJ8ea9aCX4pEW3rVHjgjt7zpkNpZk+02D9phzyeVkE+jo0ieGizqPLForn" crossorigin="anonymous"></script>
-    <script src="/scripts/moment.js"></script>
-    <script src="/scripts/mustache.js"></script>
-    <script src="/scripts/index.js"></script>
 </body>
 </html>
