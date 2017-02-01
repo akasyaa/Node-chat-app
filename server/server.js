@@ -43,16 +43,23 @@ io.on('connection', (socket) => {
 
     // Create message listener
     socket.on('createMessage', (msg, callback) => {
-        console.log(msg);
+        const user = users.getUser(socket.id);
 
-        io.emit('newMessage', generateMessage(msg.from, msg.text));
+        if (user && isRealString(msg.text)) {
+            io.to(user.room).emit('newMessage', generateMessage(user.name, msg.text));
+            return callback();
+        }
 
-        callback('Ok');
+        callback('Please enter a message.');
     });
 
     // Create location message listener
     socket.on('createLocationMessage', ({ latitude, longitude }) => {
-        io.emit('newLocationMessage', generateLocationMessage('Admin', latitude, longitude));
+        const user = users.getUser(socket.id);
+
+        if (user) {
+            io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, latitude, longitude));
+        }
     });
 
     // Disconnect listener
