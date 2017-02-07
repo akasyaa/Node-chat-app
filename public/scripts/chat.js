@@ -35,16 +35,20 @@ socket.on('disconnect', function() {
     console.log('Server disconnected');
 });
 
+// Handler for updating user list
 socket.on('updateUserList', function(users) {
     var ol = $('<ol></ol>');
 
+    // Fetch users from the users list and append li for each user
     users.forEach(function(user) {
         ol.append($('<li></li>').text(user));
     });
 
+    // Render HTML
     $('#users').html(ol);
 });
 
+// Handler for new message, use mustache templating
 socket.on('newMessage', function(msg) {
     var message = $('#message-template').html();
     var html = Mustache.render(message, {
@@ -57,6 +61,7 @@ socket.on('newMessage', function(msg) {
     scrollToBottom();
 });
 
+// Handler for new location message, use mustache templating
 socket.on('newLocationMessage', function(msg) {
     var message = $('#location-message-template').html();
     var html = Mustache.render(message, {
@@ -69,15 +74,14 @@ socket.on('newLocationMessage', function(msg) {
     scrollToBottom();
 });
 
-/*
- Message form handler
-*/
-
+// Message form handler, on submit
 $('#message-form').on('submit', function(e) {
     e.preventDefault();
 
+    // Select message box from DOM
     var msgBox = $('[name=message]');
 
+    // Pull value out of message box and emit createMessage
     socket.emit('createMessage', {
         text: msgBox.val()
     }, function(err) {
@@ -85,14 +89,12 @@ $('#message-form').on('submit', function(e) {
             alert(err);
         }
 
+        // Reset message box value
         msgBox.val('');
     });
 });
 
-/*
- Location button handler
-*/
-
+// Location button handler
 var locationButton = $('#send-location');
 
 locationButton.on('click', function(e) {
@@ -100,16 +102,20 @@ locationButton.on('click', function(e) {
         return alert('Geolocation not supported by your browser.');
     }
 
+    // Disable button while waiting for callback
     locationButton.attr('disabled', 'disabled').text('Sending location...');
 
     navigator.geolocation.getCurrentPosition(function(position) {
+        // Fetching location finished, re-enable button
         locationButton.removeAttr('disabled').text('Send location');
 
+        // Create new location message
         socket.emit('createLocationMessage', {
             latitude: position.coords.latitude,
             longitude: position.coords.longitude
         });
     }, function() {
+        // Error handling
         locationButton.removeAttr('disabled').text('Send location');
         alert('Unable to fetch location.');
     });

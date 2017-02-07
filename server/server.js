@@ -45,11 +45,18 @@ io.on('connection', (socket) => {
     socket.on('createMessage', (msg, callback) => {
         const user = users.getUser(socket.id);
 
-        if (user && isRealString(msg.text)) {
+        // If user does not exist, return callback with access denied message
+        if (!user) {
+            return callback('Access Denied.');
+        }
+
+        // If user exists and text is non-empty string, generate message
+        if (isRealString(msg.text)) {
             io.to(user.room).emit('newMessage', generateMessage(user.name, msg.text));
             return callback();
         }
 
+        // Alert if message is empty
         callback('Please enter a message.');
     });
 
